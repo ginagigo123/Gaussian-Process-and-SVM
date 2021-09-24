@@ -2,7 +2,7 @@
 ## Gaussian Process
 ### Part a. code with detailed explainations
 #### Load data:
-```python=
+```python
 def read_input():
     # read file
     data = np.zeros(shape=(34, 2))
@@ -47,7 +47,7 @@ The length_scale parameter $l$ controls the smoothness of the function and $\sig
 
 Before applying Gaussian process, there's another function that I use it to compute the covariance matrix.
 #### calculate covariance matrix
-```python=
+```python
 def calculate_Covar(n, X, beta, var, alpha, length_scale):
     C = np.zeros(shape=(n, n), dtype=float)
     kernel = rational_quadratic_kernel_method(X, X, var, alpha, length_scale)
@@ -62,7 +62,7 @@ Because the $\delta$ equals to 1 only when the n equals to m, instead the identi
 
 Here we get the kernel function and the covariance matrix, so we could apply the two function to Gaussian Process.
 #### Gaussian Proccess
-```python=
+```python
 def Gaussian_Process(X, Y, X_pos, beta, var, alpha, length_scale):
     # compute the Covariance: (34, 34) 
     C = calculate_Covar(X.shape[0], X, beta, var, alpha, length_scale)
@@ -102,7 +102,7 @@ The shape of mean is (1000,1) and the shape of variance is (1000, 1000).
 
 After computing these variable, then we could get the mean and variance and plot them.
 #### Visualization
-```python=
+```python
 def plot_figure(X, Y, X_pos, mean_pos, var_pos, args, text=""):
     standard = np.diag(var_pos) ** (1/2)
     standard = standard.reshape(-1, 1)
@@ -120,15 +120,15 @@ def plot_figure(X, Y, X_pos, mean_pos, var_pos, args, text=""):
     plt.ylabel("Y")
 ```
 For the part of visualization, we plot the $\mu$ line with the blue color. And the corresponding code is
-```python=
+```python
 plt.plot(X_pos, mean_pos, "b")
 ```
 Also, all the data points are also showed. 
-```python=
+```python
 plt.scatter(X, Y, c="#ff00f2")
 ```
 For the 95% confidence inteval of f, the Z value is 1.96. So the upper line is mean + 1.96 * $\sigma$ and the lower line is mean - 1.96 * $\sigma$ plotting with red color and filling color between these interval. 
-```python=
+```python
 plt.plot(X_pos, mean_pos + 1.96 * standard, "r")
 plt.plot(X_pos, mean_pos - 1.96 * standard, "r")
 
@@ -138,7 +138,7 @@ plt.fill_between(X_pos[:, 0], upper[:, 0], lower[:, 0], alpha = 0.2, color="#ffe
 ```
 
 Then we go to the main function.
-```python=
+```python
 # read the input.data  X: (34,1 ) Y: (34, 1) 
 X, Y = read_input()
 
@@ -159,7 +159,7 @@ Initialize the beta, var, alpha and length_scale and we put them to Gaussian Pro
 
 
 #### Optimize the kernel parameters - minimizing the negative marginal log-likelihood
-```python=
+```python
 def costFunction_naive(theta, X, Y, beta):
     """
     Returns the function that compute the negative log marginal 
@@ -211,7 +211,7 @@ Optimal values for these parameters can be estimated by minimizing the negative 
 Theta in costFunction is the kernel parameter that we want to find.
 
 Then we use scipy.optimize.minimize to minimize the marginal log-likelihood.
-```python=
+```python
 from scipy.optimize import minimize
 
 result = minimize(costFunction_naive, [var, alpha, length_scale], args=(X, Y, beta), bounds=((1e-8, 1e6), (1e-4, 1e6), (1e-8, 1e6)) )
@@ -275,7 +275,7 @@ The rational quadratic kernel is equivalent to adding many SE kernels together w
 ## SVM 
 ### Part a: code with detailed explanation
 #### I. different kernel functions
-```python=
+```python
 import numpy as np
 import time # calculate the compute time
 from libsvm.svmutil import *
@@ -334,7 +334,7 @@ options:
 So in the above code, I use the dict to map different kernel function, linear equals to 0, polynomial equals to 1, and the radial basis function equals to 2. Then iterate the dict and train the model using different kernel function by changing the kernel type.
 
 train & test:
-```python=
+```python
 """
 svm_train(Y, X, command)
 return svm.svm_model
@@ -348,7 +348,7 @@ p_acc: accuracy
 p_val: a 2D list, each row contains 10 kernel value. The column with higher value would be the result label.
 
 #### II. Grid search
-```python=
+```python
 def findBestParameter(Y_train, X_train, optimal_acc, optimal_command, command):
     now_acc = svm_train(Y_train, X_train, command)
     if optimal_acc < now_acc:
@@ -436,7 +436,7 @@ So here, the function findBestParameter is used to evaluate whether the new set 
 Then we use the grid search to iterate. After we get the best parameter set and the best command, we predict the test dataset.
 
 #### III. linear + RBF kernel
-```python=
+```python
 def linearKernel(u, v):
     return u @ v.T
 
@@ -459,12 +459,12 @@ p_label, p_acc, p_val = svm_predict(Y_test, X_kernel_s, model)
 ```
 As we already know the linear kernel function and the radial basis function, we mixed them together and see the performance.
 * linear $K(x, z) = x^Tz$
-```python=
+```python
 def linearKernel(u, v):
     return u @ v.T
 ```
 * radial basis function(RBF): $K(x, z)= e^{-\gamma ||x-z||^ 2}$
-```python=
+```python
 def RBFKernel(u, v, gamma):
     dist = np.sum(u ** 2, axis=1).reshape(-1, 1) + np.sum(v **2, axis=1) - 2 * u @ v.T
     return np.exp(-gamma *  dist)
@@ -482,7 +482,7 @@ In the document, the first column would be the serial number:
 >    
 >	15  0:? 1:2 2:0  3:1
 
-```python=
+```python
 X_kernel = np.hstack((np.arange(1, 5001).reshape(-1, 1), combineKernel))
 X_kernel_s = np.hstack((np.arange(1, 2501).reshape(-1, 1), combineKernel_test))
 ```
