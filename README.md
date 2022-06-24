@@ -27,7 +27,7 @@ At first, I load the data by the above code. Split the line, and get X and Y. Re
 
 In this experiment we use the ***Rational Quadratic kernel*** function to compute the similarities between different points.
 #### Rational quadratic kernel
-\begin{gather*}k(x_a, x_b) = \sigma^2(1+\dfrac{||x_a-x_b||^2}{2\alpha l^2})^{-\alpha}\end{gather*}
+$\begin{gather}k(x_a, x_b) = \sigma^2(1+\dfrac{||x_a-x_b||^2}{2\alpha l^2})^{-\alpha}\end{gather}$
 * $\alpha^2$ the overall variance
 * $l$ the lengthscale
 * $\alpha$ the scale-mixture ($\alpha$>0)
@@ -54,9 +54,9 @@ def calculate_Covar(n, X, beta, var, alpha, length_scale):
     C = kernel + (1 / beta) * np.eye(n)
     return C
 ```
-\begin{gather*}C(X_n, X_m) = k(x_n, x_m) + \beta^{-1}\delta_{nm}\end{gather*}
+$\begin{gather}C(X_n, X_m) = k(x_n, x_m) + \beta^{-1}\delta_{nm}\end{gather}$
 
-\begin{gather*}\delta_{nm} = \begin{cases} 1,~n = m, \\ 0,~otherwise. \end{cases}\end{gather*}
+$\begin{gather}\delta_{nm} = \begin{cases} 1,~n = m, \\ 0,~otherwise. \end{cases}\end{gather}$
 
 Because the $\delta$ equals to 1 only when the n equals to m, instead the identity matrix is uesd to present the total $\delta{nm}$.
 
@@ -91,9 +91,9 @@ And the prediction would be:
 ![](https://i.imgur.com/X40tl9F.png)
 
 Most importance of all, the conditional distribution $p(y^*|y)$ is Gaussian distribution with:
-\begin{gather*}\mu(x^*)= k(x, x^*)^T C^{-1}y \end{gather*}
-\begin{gather*}\sigma^2(x^*) = k^* - k(x, x^*)^T C^{-1} k(x. x^*) \end{gather*}
-\begin{gather*}k^* = k(x^*, x^*) +\beta^{-1} \end{gather*}
+$\begin{gather}\mu(x^*)= k(x, x^*)^T C^{-1}y \end{gather}$
+$\begin{gather}\sigma^2(x^*) = k^* - k(x, x^*)^T C^{-1} k(x. x^*) \end{gather}$
+$\begin{gather}k^* = k(x^*, x^*) +\beta^{-1} \end{gather}$
 
 So in the above code, we calculate the kernel_upR to measure the similarity of training data and testing data. The variable kernel_upR is same as $k(x, x^*)$. 
 kernel_downR equals to the computation $k(x^*, x^*)+\beta^{-1}$
@@ -200,11 +200,11 @@ Here I implemented 2 optimization function, one is naive one and the other is mo
 The stable cost function first use cholesky decomposion to get the L. Secondly, using the solve_triangular to solve the equation Lx = Y for x, x here equals to S1. Thirdly, L.Tx = S1, x here equals to S2. The det(C_opt) in the naive cost function is replaced by the np.diagonal(L) and the inv(C_opt) @ Y is replaced by the S2.
 
 The marginal likelihood if function of $\theta$:
-\begin{gather*}
+$\begin{gather}
 p(y|\theta) = N(y|0, C_{\theta})\\
 \ln p(y | \theta) = -{1 \over 2} \ln |C_{\theta}| -{1 \over 2}y^TC_{\theta}^{-1}y -{N \over 2} \ln(2 \pi)
-\end{gather*}
-$\theta$: the set of var, alpha and length_scale.
+\end{gather}$
+$\theta$ : the set of var, alpha and length_scale.
 
 Optimal values for these parameters can be estimated by minimizing the negative log likelihood w.r.t parameters var, alpha and length_scale.
 
