@@ -58,7 +58,7 @@ $\begin{gather}C(X_n, X_m) = k(x_n, x_m) + \beta^{-1}\delta_{nm}\end{gather}$
 
 $\begin{gather}\delta_{nm} = \begin{cases} 1,~n = m, \\ 0,~otherwise. \end{cases}\end{gather}$
 
-Because the $\delta$ equals to 1 only when the n equals to m, instead the identity matrix is uesd to present the total $\delta{nm}$.
+Because the $\delta$ equals to 1 only when the n equals to m, instead the identity matrix is uesd to present the total $\delta_{nm}$.
 
 Here we get the kernel function and the covariance matrix, so we could apply the two function to Gaussian Process.
 #### Gaussian Proccess
